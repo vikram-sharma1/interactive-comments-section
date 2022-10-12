@@ -55,7 +55,6 @@ html{
     background-color: var(--white);
     width: 60%;
     margin: auto;
-    /* border: 2px solid red; */
     height: 20%;
     padding: 10px;
     display: flex;
@@ -148,6 +147,16 @@ html{
 .reply-box:hover{
     cursor: pointer;
 }
+
+.list-replies{
+    font-size:small;
+    width: 70%;
+    margin: 0px;
+    margin-left: 25%;
+    border-left: 1px solid rgb(206, 200, 200);
+
+}
+
 
 /* CSS */
 .button-9 {
