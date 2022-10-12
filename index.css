@@ -141,6 +141,13 @@ html{
     font-weight: normal;
 }
 
+.none{
+    display: none;
+}
+
+.reply-box:hover{
+    cursor: pointer;
+}
 
 /* CSS */
 .button-9 {
