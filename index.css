@@ -102,12 +102,17 @@ html{
     line-height: 30px;
 }
 
+.data-show-from-js{
+
+    /* border: 1px solid black; */
+    height: 750px;
+    overflow-y: scroll;
+}
 
 
 /* post comment CSS */
 
 .post-cmt-box{
-    /* border: 1px solid black; */
     width: 50%;
     margin:auto;
     display: flex;
@@ -139,6 +144,13 @@ html{
     font-size: 20px;
     font-weight: normal;
 }
+.add-new-cmt-inp{
+    width: 80%;
+    height: 90%;
+    font-size: 20px;
+    font-weight: normal;
+}
+
 
 .none{
     display: none;
