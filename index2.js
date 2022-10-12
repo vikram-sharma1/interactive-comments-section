@@ -42,7 +42,7 @@ function sample(singleCmtData){
 
 
 function createMessage(singleCmtData) {
-    if(singleCmtData.id > 5){
+    if(singleCmtData.user.username == "juliusomo"){
         return (`<div>
         <div class="comment-box">
         <div class="like-box">
@@ -67,10 +67,10 @@ function createMessage(singleCmtData) {
                     </div>
                 </div>
                 <div class="">
-                    <span>
+                    <span class="edit-icon ${singleCmtData.id}">
                         <img src="./images/icon-edit.svg" alt="">
                     </span>
-                    <span>
+                    <span class="delete-icon ${singleCmtData.id}">
                         <img src="./images/icon-delete.svg" alt="">
                     </span>
                 </div>
@@ -315,6 +315,8 @@ sendBtns.forEach((btn)=>{
                 replyBoxOn()
                 like()
                 disLike()
+                deletCmt()
+
             }
         })
     })  
@@ -323,13 +325,13 @@ sendBtns.forEach((btn)=>{
 
 
 function newCmtAdd(){
-    
+    // let num = 2
     let addCmtBtn = document.querySelector('#send-btn-cmt')
     addCmtBtn.addEventListener("click", ()=> {
 
 
         let replyObjCmt = {
-            "id" : Math.round((Math.random()) * 100),
+            "id" : Math.round((Math.random()) * 100) + 5,
             "content" : document.querySelector('.add-new-cmt-inp').value,
             "createdAt" : "2 days ago",
             "score" : Math.round((Math.random()) * 100),
@@ -353,10 +355,40 @@ function newCmtAdd(){
         replyBoxOn()
         like()
         disLike()
+        deletCmt()
+        // num++
     })
-
-
-    
-
 }
 
+
+function deletCmt(){
+    let deleteIcon = document.querySelectorAll('.delete-icon')
+
+   deleteIcon.forEach((del) => {
+        del.addEventListener('click', ()=>{
+            // console.log(del.classList[1])
+            let id = del.classList[1]
+            console.log(id)
+            let storageData = JSON.parse(localStorage.getItem('InteractiveCmts'))
+                let newData = storageData.filter((ele) => {
+                        if(id != ele.id){
+                            return ele
+                        }
+                })
+
+                console.log(newData)
+                localStorage.setItem('InteractiveCmts', JSON.stringify(newData))
+                let startData = JSON.parse(localStorage.getItem('InteractiveCmts'))
+                document.querySelector('.data-show-from-js').innerHTML = ""
+                appendData(startData)
+                
+                dataReply()
+                replyBoxOn()
+                like()
+                disLike()
+                deletCmt()
+
+        })
+   })
+
+}
