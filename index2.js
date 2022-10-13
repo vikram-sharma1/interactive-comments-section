@@ -21,7 +21,10 @@ function appendData(startData,dell){
     let repliesBox = document.querySelector(`#list-replies_${comment.id}`)
     if(comment.replies.length > 0){
         comment.replies.forEach((singleReply) => {
-            repliesBox.innerHTML += createMessage(singleReply)
+            if(singleReply.content.length > 0){
+
+                repliesBox.innerHTML += createMessage(singleReply)
+            }
         })
     }
 })
@@ -207,6 +210,8 @@ replyBtns.forEach((btn) => {
 
 
 })
+dataReply()
+
 }
 
 
@@ -214,13 +219,13 @@ function dataReply(){
 
     let sendBtns = document.querySelectorAll('.button-9')
 
-sendBtns.forEach((btn)=>{
-    btn.addEventListener('click', ()=>{
-       let num =  btn.classList[1]
-       let commentBox=document.querySelector(`#reply-box${num}`)
-       let newData = JSON.parse(localStorage.getItem('InteractiveCmts')) || []
-
-    newData.forEach((cmt)=>{
+    sendBtns.forEach((btn)=>{
+        btn.addEventListener('click', ()=>{
+            let num =  btn.classList[1]
+            let commentBox=document.querySelector(`#reply-box${num}`)
+            
+            let newData = JSON.parse(localStorage.getItem('InteractiveCmts')) || []
+            newData.forEach((cmt)=>{
             if(cmt.id == num){
                 let replyObj = {
                     "id" : Math.round((Math.random()) * 100) + 5,
@@ -238,6 +243,7 @@ sendBtns.forEach((btn)=>{
                  
                 cmt.replies.push(replyObj)
                 
+                localStorage.setItem("InteractiveCmts", JSON.stringify(newData))
 
                 document.querySelector('.data-show-from-js').innerHTML = ""
                 appendData(newData)
@@ -245,7 +251,7 @@ sendBtns.forEach((btn)=>{
                 like()
                 disLike()
                 deletCmt()
-
+                // dataReply()
             }
 
         })
@@ -258,8 +264,8 @@ function newCmtAdd(){
   
     let addCmtBtn = document.querySelector('#send-btn-cmt')
     addCmtBtn.addEventListener("click", ()=> {
-
         let startData = JSON.parse(localStorage.getItem('InteractiveCmts')) || []
+
 
         let replyObjCmt = {
             "id" : Math.round((Math.random()) * 100) + 5,
@@ -276,6 +282,7 @@ function newCmtAdd(){
             }
         }
         startData.push(replyObjCmt)
+        localStorage.setItem("InteractiveCmts", JSON.stringify(startData))
         document.querySelector('.data-show-from-js').innerHTML = ""
         appendData(startData)
         
@@ -290,11 +297,11 @@ function newCmtAdd(){
 function deletCmt(){
     let deleteIcon = document.querySelectorAll('.delete-icon')
 
-   deleteIcon.forEach((del) => {
+    deleteIcon.forEach((del) => {
         del.addEventListener('click', ()=>{
+            let storageData = JSON.parse(localStorage.getItem('InteractiveCmts')) || []
             let id = del.classList[1]
             console.log(id)
-            let storageData = JSON.parse(localStorage.getItem('InteractiveCmts')) || []
                 let newData = storageData.filter((ele) => {
                      
                         if(ele.replies.length>0){
@@ -312,6 +319,8 @@ function deletCmt(){
                         
                         
                 })
+            localStorage.setItem("InteractiveCmts", JSON.stringify(newData))
+
                 document.querySelector('.data-show-from-js').innerHTML = ""
                 appendData(newData)
                 
