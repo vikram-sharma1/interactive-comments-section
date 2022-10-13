@@ -1,9 +1,4 @@
-// console.log("hello")
-
 import data from "./data.json" assert{type:'json'}
-
-// console.log(data)
-// console.log("numcheck", Math.round((Math.random()) * 100));
 
 var {comments}=data
 
@@ -14,7 +9,7 @@ localStorage.setItem('InteractiveCmts', JSON.stringify(comments))
 
 
 
-let startData = JSON.parse(localStorage.getItem('InteractiveCmts'))
+let startData = JSON.parse(localStorage.getItem('InteractiveCmts')) 
 appendData(startData)
 
 function appendData(startData,dell){
@@ -24,8 +19,6 @@ function appendData(startData,dell){
     main.innerHTML+=createMessage(comment)
 
     let repliesBox = document.querySelector(`#list-replies_${comment.id}`)
-    // let num = repliesBox.classList[1]
-    // console.log(comment);
     if(comment.replies.length > 0){
         comment.replies.forEach((singleReply) => {
             repliesBox.innerHTML += createMessage(singleReply)
@@ -35,10 +28,7 @@ function appendData(startData,dell){
 
 }
 
-function sample(singleCmtData){
-    const main=document.querySelector(".data-show-from-js")
-    main.innerHTML+=createMessageWithDeleteIcon(singleCmtData)
-}
+
 
 
 function createMessage(singleCmtData) {
@@ -152,61 +142,6 @@ function createMessage(singleCmtData) {
     )
 }
 }
-function createMessageWithDeleteIcon(singleCmtData){
-    return(`
-    <div>
-    <div class="comment-box">
-    <div class="like-box">
-        <div class='plus-btn ${singleCmtData.id}'>
-            <img src="./images/icon-plus.svg" alt="icon-plus" width="40%">
-        </div>
-        <div>
-            <p class="like-count" id="like-count${singleCmtData.id}">${singleCmtData.score}</p>
-        </div>
-        <div class='minus-btn ${singleCmtData.id}'>
-            <img src="./images/icon-minus.svg" alt="icon-minus" width="40%">
-        </div>
-    </div>
-    <div class="user-cmt-box">
-        <div class="user-detail-box">
-            <div class="img-name-date-box">
-                <div class="img-box">
-                    <img src=${singleCmtData.user.image.png} alt="${singleCmtData.username}" width="80%">
-                </div>
-                <div class="user-name-box">
-                    <span class="user-name">${singleCmtData.user.username}</span><span class="month-ago">${singleCmtData.createdAt}</span>
-                </div>
-            </div>
-            <div class="reply-box ${singleCmtData.id}">
-                <span>
-                    <img src="./images/icon-edit.svg" alt="">
-                </span>
-                <span>
-                    <img src="./images/icon-delete.svg" alt="">
-                </span>
-            </div>
-        </div>
-        <div>
-            <p class="user-cmt">${singleCmtData.content}</p>
-        </div>
-    </div>
-    </div>
-    <div class="none ${singleCmtData.id}" id='reply-box${singleCmtData.id}'>
-            <div class="post-img-box">
-                <img src="./images/avatars/image-juliusomo.png" alt="image-juliusomo" width="80%">
-            </div>
-            <div class="post-input-box">
-                <input type="text" class="add-cmt-inp" id="add-cmt${singleCmtData.id}" placeholder="Add reply here">
-            </div>
-            <div class="post-button-box">
-                <button class="button-9 ${singleCmtData.id}" id="send-btn" >Send</button>
-            </div>
-    </div>
-    <div id="list-replies_${singleCmtData.id}" class="list-replies"></div>
-
-</div>
-    `)
-}
 
 
 dataReply()
@@ -217,7 +152,6 @@ disLike()
 
 
 function like(){
-    // Increase the Like Count
 
 const plusBtn =document.querySelectorAll(".plus-btn")
 
@@ -253,7 +187,6 @@ function disLike(){
 function replyBoxOn(){
 
     let replyBtns = document.querySelectorAll('.reply-box')
-// console.log(replyBtns)
 
 replyBtns.forEach((btn) => {
     btn.addEventListener('click', ()=>{
@@ -262,11 +195,8 @@ replyBtns.forEach((btn) => {
         let replyBoxList = replyBox.classList
         replyBox.forEach(e=>{
             let classnum=e.classList
-            // console.log(classnum);
             classnum.forEach((ele)=>{
-                // console.log(ele);
                 if(ele===btnclass){
-                    // console.log(ele)
                     let commentBox=document.querySelector(`#reply-box${ele}`)
                     commentBox.className = `post-cmt-box ${ele}`
                 }
@@ -281,14 +211,16 @@ replyBtns.forEach((btn) => {
 
 
 function dataReply(){
+
     let sendBtns = document.querySelectorAll('.button-9')
 
 sendBtns.forEach((btn)=>{
     btn.addEventListener('click', ()=>{
        let num =  btn.classList[1]
        let commentBox=document.querySelector(`#reply-box${num}`)
-    //    commentBox.className = `none ${num}`
-        comments.forEach((cmt)=>{
+       let newData = JSON.parse(localStorage.getItem('InteractiveCmts')) || []
+
+    newData.forEach((cmt)=>{
             if(cmt.id == num){
                 let replyObj = {
                     "id" : Math.round((Math.random()) * 100) + 5,
@@ -305,19 +237,17 @@ sendBtns.forEach((btn)=>{
                 }
                  
                 cmt.replies.push(replyObj)
+                
 
-                localStorage.setItem('InteractiveCmts', JSON.stringify(comments))
-                let newData = JSON.parse(localStorage.getItem('InteractiveCmts'))
                 document.querySelector('.data-show-from-js').innerHTML = ""
                 appendData(newData)
-
-                dataReply()
                 replyBoxOn()
                 like()
                 disLike()
                 deletCmt()
 
             }
+
         })
     })  
 })
@@ -325,10 +255,11 @@ sendBtns.forEach((btn)=>{
 
 
 function newCmtAdd(){
-    // let num = 2
+  
     let addCmtBtn = document.querySelector('#send-btn-cmt')
     addCmtBtn.addEventListener("click", ()=> {
 
+        let startData = JSON.parse(localStorage.getItem('InteractiveCmts')) || []
 
         let replyObjCmt = {
             "id" : Math.round((Math.random()) * 100) + 5,
@@ -344,19 +275,14 @@ function newCmtAdd(){
                 "username" : data.currentUser.username ,
             }
         }
-        comments.push(replyObjCmt)
-        localStorage.setItem('InteractiveCmts', JSON.stringify(comments))
-        let startData = JSON.parse(localStorage.getItem('InteractiveCmts'))
+        startData.push(replyObjCmt)
         document.querySelector('.data-show-from-js').innerHTML = ""
         appendData(startData)
         
-        dataReply()
-        // newCmtAdd()
         replyBoxOn()
         like()
         disLike()
         deletCmt()
-        // num++
     })
 }
 
@@ -366,21 +292,28 @@ function deletCmt(){
 
    deleteIcon.forEach((del) => {
         del.addEventListener('click', ()=>{
-            // console.log(del.classList[1])
             let id = del.classList[1]
             console.log(id)
-            let storageData = JSON.parse(localStorage.getItem('InteractiveCmts'))
+            let storageData = JSON.parse(localStorage.getItem('InteractiveCmts')) || []
                 let newData = storageData.filter((ele) => {
-                        if(id != ele.id){
+                     
+                        if(ele.replies.length>0){
+                           let arr= ele.replies.filter(e=>{
+                                if(e.id!=id){
+                                    return e
+                                }
+                            })
+                            ele.replies=arr
+                        }
+                        if(ele.id!=id){
                             return ele
                         }
+                        
+                        
+                        
                 })
-
-                console.log(newData)
-                localStorage.setItem('InteractiveCmts', JSON.stringify(newData))
-                let startData = JSON.parse(localStorage.getItem('InteractiveCmts'))
                 document.querySelector('.data-show-from-js').innerHTML = ""
-                appendData(startData)
+                appendData(newData)
                 
                 dataReply()
                 replyBoxOn()
